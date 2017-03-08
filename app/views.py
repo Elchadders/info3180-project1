@@ -31,7 +31,7 @@ def about():
 @app.route('/profile')
 def profile():
     """Shows the profile."""
-    return render_template('profile.html',time = time.strftime("%c"))  
+    return render_template('profile.html')  
 
 
 ###

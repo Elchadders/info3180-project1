@@ -1,58 +1,37 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+
+{% block main %}
 
 <html>
-<head>
-<style>
-.container {
-    width: 100%;
-}
- 
-nav {
-    float: left;
-    max-width: 160px;
-    margin: 0;
-    padding: 1em;
-}
-
- 
-
- 
-article {
-    margin-left: 170px;
-    border-left: 1px solid gray;
-    padding: 1em;
-    overflow: hidden;
-}
-</style>
-</head>
 <body>
- 
-<div class="container">
- 
 
- 
-<nav>
-  <img src="{{url_for('static',filename="programmer-and-process-coding_23-2147505688.jpg")}}"/>
-</nav>
- 
-<article>
-  <h1>My Profile</h1>
-  <p>Today's date is Fri,27 Jan 2017</p>
-  <hr>
-  <p>Username: John Brown</p>
- 
-  <p>ID Number: 620065782</p>
- 
-  <p>Age: 43</p>
- 
-  <p>Gender: 54</p>
-  <hr>
- 
-  <p> I like to make Android apps.</p>
-</article>
- 
- 
-</div>
- 
+<form action="/action_page.php" id="userform">
+  <fieldset>
+    <legend>New User:</legend>
+    First name:<br>
+    <input type="text" name="firstname" value="first name">
+    <br>
+    Last name:<br>
+    <input type="text" name="lastname" value="last name">
+    <br>
+    Age:<br>
+    <input type="text" name="age" value="25">
+    <br>
+    Gender:<br>
+    <input type="radio" name="gender" value="male" checked> Male<br>
+    <input type="radio" name="gender" value="female"> Female<br>
+    <input type="radio" name="gender" value="other"> Other
+    <br>
+    Image:<br>
+    <input type="file" id="image">
+    <br>
+    
+    <input type="submit" value="Submit">
+  </fieldset>
+</form>
+
 </body>
 </html>
+
+
+{% endblock %}
