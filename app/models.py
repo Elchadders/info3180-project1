@@ -6,7 +6,7 @@ from app import db
 from flask_appbuilder.models.mixins import AuditMixin, BaseMixin, FileColumn, ImageColumn
 from flask_appbuilder.filemanager import ImageManager
 from flask_appbuilder import Model
-
+from flask.ext.sqlalchemy import SQLAlchemy
 
 
 class User(db.Model):
@@ -16,16 +16,16 @@ class User(db.Model):
     age = db.Column(db.Integer(3))
     gender = db.Column(db.String(80), unique=True)
     biography = db.Column(db.String(300), unique=True)
-    image = db.Column(db.String(80), unique=True)
+    image = db.Column(db.String(100), unique=True)
     
 
-    def __init__(self, firstname, lastname, age, gender, biography, email):
+    def __init__(self, firstname, lastname, age, gender, biography):
         self.firstname = firstname
         self.lastname = lastname
         self.age = age
         self.gender = gender
         self.biography = biography
-        self.email = email
+        
         
         
         
@@ -44,14 +44,26 @@ class User(db.Model):
             return unicode(self.id)  # python 2 support
         except NameError:
             return str(self.id)  # python 3 support
-
+            
+    
     def __repr__(self):
-        return '<User %r>' % (self.username)    
+        return '<User %r>' % (self.username)
+    
+    def to_json(self):
+        return jsonify({
+            "userid": self.id,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "gender": self.gender,
+            "age": self.age,
+            "profile_created_on": self.added_on.strftime("%Y-%m-%d"),
+            "biography": self.biography,
+            "image": ".."
+            })
         
         
         
 
 
 
-    def __repr__(self):
-        return '<User %r>' % self.name
+   

@@ -36,42 +36,39 @@ def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
 
+@app.route('/profile', methods=['POST', 'GET'])
+def profile():
+    user_form = UserForm()
+
+    if request.method == 'POST':
+        if user_form.validate_on_submit():
+            # Get validated data from form
+            firstname = user_form.firstname.data # You could also have used request.form['name']
+            lastname = user_form.lastname.data
+            age = user_form.age.data
+            gender = user_form.gender.data
+            biography = user_form.biography.data
+            image = filename(user_form.image.file.filename)
+            
+
+            # save user to database
+            user = User(firstname, lastname, age, gender, biography,image)
+            db.session.add(user)
+            db.session.commit()
+
+            flash('User successfully added')
+            return redirect(url_for('profiles'))
+
+    flash_errors(user_form)
+    return render_template('profile.html', form=user_form)
+
+
+
 @app.route('/profiles')
 def show_users():
-    users = db.session.query(User).all() # or you could have used User.query.all()
-
-    return render_template('show_users.html', users=users)
-
-@app.route('/profile', methods= ['GET','POST'])
-def profileform ():
-    form = ProfileForm()
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            """post method filler"""
-            return render_template('profile.html', form=form)
-        else:
-            flash("Please complete all required fields")
-            return render_template('profile.html', form=form)
-    elif request.method == 'GET':
-        """Render website's profile page."""
-        return render_template('profile.html', form=form, date = timeinfo())
-        
-        
-@app.route('/profiles', methods= ['GET','POST'])
-def allprofilesform ():
-    form = AllProfilesForm()
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            return render_template('profiles.html', form=form)
-        else:
-            flash('Your email was not submitted. Remember all fields are required.')
-            return render_template('profile.html', form=form)
-    elif request.method == 'GET':
-        """Render website's profile page."""
-        return render_template('profiles.html', form=form)
-        
-
-
+    users = db.session.query(User).all()
+    
+    
 @app.route('/profile/<userid>', methods= ['GET','POST'])
 def personalprofileform ():
     form = PersonalProfileForm()
@@ -79,12 +76,12 @@ def personalprofileform ():
         if form.validate_on_submit():
             return render_template('personalprofile.html', form=form)
         else:
-            flash('Your email was not submitted. Remember all fields are required.')
+            flash('Please complete all the fields required.')
             return render_template('personalprofile.html', form=form)
     elif request.method == 'GET':
         """Render website's profile page."""
         return render_template('personalprofile.html', form=form)
-        
+    
 def dateinfo():
 	result = time.strftime("%a, %d %b %Y")
 
@@ -102,6 +99,10 @@ def flash_errors(form):
 ###
 # The functions below should be applicable to all Flask apps.
 ###
+
+@app.route('/uploads/<path:path>')
+def send_uploads(path):
+return send_from_directory(app.config['UPLOAD_FOLDER'], path)
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):

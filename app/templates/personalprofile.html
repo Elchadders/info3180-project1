@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<html>
+<body>
+
+<form action="/action_page.php" id="userform">
+  <fieldset>
+    <legend>New User:</legend>
+    First name:<br>
+    <input type="text" name="firstname" value="first name">
+    <br>
+    Last name:<br>
+    <input type="text" name="lastname" value="last name">
+    <br>
+    Age:<br>
+    <input type="text" name="age" value="25">
+    <br>
+    Gender:<br>
+    <input type="radio" name="gender" value="male" checked> Male<br>
+    <input type="radio" name="gender" value="female"> Female<br>
+    <input type="radio" name="gender" value="other"> Other
+    <br>
+    Image:<br>
+    <input type="file" id="image">
+    <br>
+    Biography:<br>
+    <textarea rows="4" cols="50" name="comment" form="userform">
+      Enter text here...
+    </textarea>
+    <br>
+    <input type="submit" value="Submit">
+  </fieldset>
+</form>
+
+</body>
+</html>
+
+
+{% endblock %}
