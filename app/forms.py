@@ -1,17 +1,13 @@
-from flask.ext.wtf import Form
-from wtforms.fields import TextField, RadioField 
-from flask_wtf.file import FileField, FileRequired, FileAllowed
-from wtforms.validators import Required
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextField, FileField, file_required, RadioField
+from wtforms.validators import InputRequired
 
-class UserForm(Form):
-	first_name = TextField("first_name", validators=[Required()])
-	last_name = TextField("last_name", validators=[Required()])
-	gender = RadioField("gender", choices=[
-		('male', 'Male'), 
-		('female', 'Female')
-	])
-	age = TextField("age", validators=[Required()])
-	image = FileField("image", validators=[
-		FileRequired(),
-		FileAllowed(['jpg', 'png'], "Images only!")
-	])
+class UserForm(FlaskForm):
+    firstname = StringField('Firstname', validators=[InputRequired()])
+    lastname = StringField('Lastname', validators=[InputRequired()])
+    age = IntegerField('Age', validators=[InputRequired()])
+    gender = RadioField('Gender', choices=[('male'),('female')])
+    biography = TextField('biography', validators=[InputRequired()])
+    image = FileField('Image', validators=[file_required()])
+    lastname = StringField('Lastname', validators=[InputRequired()])
+    
